@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://tefbakisroumwmkxqjon.supabase.co; base-uri 'none'; form-action 'none'">
+    <title>Connect to agent memory</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main>
+      <h1>Connect to agent memory</h1>
+      <section id="signin" hidden>
+        <p>Sign in to approve the connection.</p>
+        <form id="signin-form">
+          <label>Email <input id="email" type="email" autocomplete="username" required></label>
+          <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+          <button type="submit">Sign in</button>
+        </form>
+      </section>
+      <section id="consent" hidden>
+        <p><strong id="client"></strong> wants to read and add to your agent memory.</p>
+        <p>It will be sent back to <code id="dest"></code>. Scopes: <span id="scopes"></span>.</p>
+        <button id="approve" type="button">Approve</button>
+        <button id="deny" type="button">Deny</button>
+      </section>
+      <section id="error" hidden>
+        <p id="error-text"></p>
+      </section>
+    </main>
+    <script src="supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+    <script src="config.js"></script>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
