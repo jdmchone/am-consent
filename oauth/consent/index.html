@@ -20,6 +20,24 @@
           <button type="submit">Sign in</button>
         </form>
       </section>
+      <section id="setpassword" hidden>
+        <h2>Choose your password</h2>
+        <form id="setpassword-form">
+          <label>New password (at least 12 characters) <input id="new-password" type="password" autocomplete="new-password" minlength="12" required></label>
+          <label>Repeat the password <input id="new-password2" type="password" autocomplete="new-password" minlength="12" required></label>
+          <button type="submit">Set password</button>
+        </form>
+        <p id="setpassword-message" role="alert"></p>
+      </section>
+      <section id="welcome" hidden>
+        <h2 id="welcome-title"></h2>
+        <p>Add the connector <code id="mcp-url"></code>:</p>
+        <ul>
+          <li>in Claude Code, run <code id="mcp-cmd"></code>, then <code>/mcp</code>;</li>
+          <li>in claude.ai, open Settings &gt; Connectors.</li>
+        </ul>
+        <p>If asked, sign in with your email and the password you set (this browser may already be signed in).</p>
+      </section>
       <section id="consent" hidden>
         <p><strong id="client"></strong> wants to read and add to your agent memory.</p>
         <p>It will be sent back to <code id="dest"></code>. Scopes: <span id="scopes"></span>.</p>

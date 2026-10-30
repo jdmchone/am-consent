@@ -2,9 +2,14 @@
 import { run } from './consent.js';
 
 const $ = (id) => document.getElementById(id);
-const show = (...ids) => ['signin', 'consent', 'error'].forEach((s) => ($(s).hidden = !ids.includes(s)));
+const show = (...ids) =>
+  ['signin', 'setpassword', 'welcome', 'consent', 'error'].forEach((s) => ($(s).hidden = !ids.includes(s)));
 
-const { url, key } = globalThis.AM_CONFIG; // the PUBLIC project URL and the PUBLISHABLE key: nothing else
+// The PUBLIC project URL, the PUBLISHABLE key and the public connector URL: nothing else.
+const { url, key, mcpUrl } = globalThis.AM_CONFIG;
+// The fragment is read here, BEFORE createClient and WITHOUT clearing it: supabase-js needs it to detect the session
+// from an invite or recovery link, and clears it itself.
+const hash = new URLSearchParams(globalThis.location.hash.slice(1));
 const supabase = globalThis.supabase.createClient(url, key, {
   auth: { persistSession: true, autoRefreshToken: false },
 });
@@ -25,6 +30,23 @@ const ui = {
     $('deny').onclick = actions.deny;
     show('consent');
   },
+  showSetPassword(submit) {
+    $('setpassword-message').textContent = '';
+    $('setpassword-form').onsubmit = (e) => {
+      e.preventDefault();
+      submit($('new-password').value, $('new-password2').value);
+    };
+    show('setpassword');
+  },
+  setPasswordMessage(message) {
+    $('setpassword-message').textContent = message;
+  },
+  showWelcome(mcpUrl, { passwordSet }) {
+    $('welcome-title').textContent = passwordSet ? 'Password set' : 'Connect to agent memory';
+    $('mcp-url').textContent = mcpUrl;
+    $('mcp-cmd').textContent = `claude mcp add --transport http agent-memory ${mcpUrl}`;
+    show('welcome');
+  },
   showError(message) {
     $('error-text').textContent = message;
     show('error');
@@ -38,5 +60,7 @@ run({
   supabase,
   ui,
   params: new URLSearchParams(globalThis.location.search),
+  hash,
+  mcpUrl,
   framed: globalThis.top !== globalThis.self,
 });
