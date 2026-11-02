@@ -3,7 +3,9 @@ import { run } from './consent.js';
 
 const $ = (id) => document.getElementById(id);
 const show = (...ids) =>
-  ['signin', 'setpassword', 'welcome', 'consent', 'error'].forEach((s) => ($(s).hidden = !ids.includes(s)));
+  ['signin', 'setpassword', 'welcome', 'consent', 'refused', 'denied', 'error'].forEach((
+    s,
+  ) => ($(s).hidden = !ids.includes(s)));
 
 // The PUBLIC project URL, the PUBLISHABLE key and the public connector URL: nothing else.
 const { url, key, mcpUrl } = globalThis.AM_CONFIG;
@@ -23,12 +25,24 @@ const ui = {
     };
   },
   showConsent(d, actions) {
-    $('client').textContent = d.clientName;
+    $('client').textContent = d.appLabel;
     $('dest').textContent = d.redirectHost;
     $('scopes').textContent = d.scopes.join(', ') || 'none named';
     $('approve').onclick = actions.approve;
     $('deny').onclick = actions.deny;
     show('consent');
+  },
+  // Deny only: there is no Approve element in this view at all (ADR-022 Amendment 2).
+  showRefused(d, actions) {
+    $('refused-client').textContent = d.appLabel;
+    $('refused-dest').textContent = d.redirectHost;
+    $('refused-message').textContent = d.message;
+    $('refused-deny').onclick = actions.deny;
+    show('refused');
+  },
+  showDenied(message) {
+    $('denied-text').textContent = message;
+    show('denied');
   },
   showSetPassword(submit) {
     $('setpassword-message').textContent = '';

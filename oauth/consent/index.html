@@ -44,6 +44,15 @@
         <button id="approve" type="button">Approve</button>
         <button id="deny" type="button">Deny</button>
       </section>
+      <section id="refused" hidden>
+        <p><strong id="refused-client"></strong> wants to read and add to your agent memory.</p>
+        <p>It would be sent back to <code id="refused-dest"></code>.</p>
+        <p id="refused-message" role="alert"></p>
+        <button id="refused-deny" type="button">Deny</button>
+      </section>
+      <section id="denied" hidden>
+        <p id="denied-text"></p>
+      </section>
       <section id="error" hidden>
         <p id="error-text"></p>
       </section>
